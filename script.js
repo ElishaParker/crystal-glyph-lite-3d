@@ -82,13 +82,13 @@ function playSoftTone(freq) {
     envelope: {
       attack: 4.5,   // slower fade-in (was 1.2)
       decay: 3.5,
-      sustain: 0.5,
+      sustain: 0.1,
       release: 6.0   // longer release (was 2.5)
     }
   }).toDestination();
 
   Tone.start();
-  synth.triggerAttackRelease(freq, "16n"); // longer note length
+  synth.triggerAttackRelease(freq, "12n"); // longer note length
 }
 
 
