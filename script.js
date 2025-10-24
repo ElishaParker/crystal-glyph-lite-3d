@@ -1,7 +1,6 @@
 let scene, camera, renderer, node;
 let isZoomed = false;
-let nodeData = { text: "", base4: "" };
-let hudShownOnce = false;
+let hasPlayed = false;
 
 const hud = document.getElementById("hud");
 const textInput = document.getElementById("textInput");
@@ -21,7 +20,7 @@ function init() {
   renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('scene'), antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  const ambient = new THREE.AmbientLight(0x00ffff, 0.3);
+  const ambient = new THREE.AmbientLight(0x00ffff, 0.4);
   const point = new THREE.PointLight(0x00ffff, 2);
   scene.add(ambient, point);
 
@@ -58,19 +57,18 @@ function onClick() {
 function zoomToNode() {
   const targetZ = 2.5;
   const zoomSpeed = 0.05;
-  const zoom = () => {
+  function zoom() {
     if (camera.position.z > targetZ) {
       camera.position.z -= zoomSpeed;
       requestAnimationFrame(zoom);
     } else {
-      if (!hudShownOnce) {
-        textInput.placeholder = "Enter text to encode...";
-        hudShownOnce = true;
-      }
       showHUD(true);
-      playSmoothTone(432);
+      if (!hasPlayed) {
+        playSoftTone(396);
+        hasPlayed = true;
+      }
     }
-  };
+  }
   zoom();
 }
 
@@ -78,30 +76,28 @@ function showHUD(show) {
   hud.style.display = show ? "block" : "none";
 }
 
-function playSmoothTone(freq) {
-  const synth = new Tone.PolySynth(Tone.Synth, {
+function playSoftTone(freq) {
+  const synth = new Tone.Synth({
     oscillator: { type: "sine" },
     envelope: {
-      attack: 1.2,   // gentle fade-in
+      attack: 1.2,
       decay: 2.0,
-      sustain: 0.4,
-      release: 2.5   // slow fade-out
+      sustain: 0.6,
+      release: 2.5
     }
   }).toDestination();
-
   Tone.start();
-  synth.triggerAttackRelease(freq, "4n");
+  synth.triggerAttackRelease(freq, "8n");
 }
 
 function convertText() {
   const text = textInput.value;
-  nodeData.text = text;
-  nodeData.base4 = textToBase4(text);
-  output.textContent = nodeData.base4;
+  const base4 = textToBase4(text);
+  output.textContent = base4;
 }
 
 function reverseTranslate() {
-  textInput.value = nodeData.text || "";
+  textInput.value = textInput.value || "";
 }
 
 function textToBase4(str) {
@@ -115,24 +111,25 @@ function textToBase4(str) {
 function closeHUD() {
   showHUD(false);
   isZoomed = false;
+  hasPlayed = false;
   zoomOut();
 }
 
 function zoomOut() {
   const targetZ = 8;
   const zoomSpeed = 0.05;
-  const zoom = () => {
+  function zoom() {
     if (camera.position.z < targetZ) {
       camera.position.z += zoomSpeed;
       requestAnimationFrame(zoom);
     }
-  };
+  }
   zoom();
 }
 
 function animate() {
   requestAnimationFrame(animate);
-  node.rotation.y += 0.005;
+  node.rotation.y += 0.004;
   node.material.emissiveIntensity = 0.5 + Math.sin(Date.now() * 0.002) * 0.3;
   renderer.render(scene, camera);
 }
