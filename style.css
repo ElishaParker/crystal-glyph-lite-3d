@@ -1,7 +1,7 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: radial-gradient(circle at center, #020a14, #000);
+  background: radial-gradient(circle at center, #010a12, #000);
   color: cyan;
   font-family: 'Orbitron', sans-serif;
 }
@@ -16,11 +16,65 @@ canvas {
 
 .hud {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(0, 255, 255, 0.05);
-  padding: 10px 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 15, 25, 0.9);
   border: 1px solid cyan;
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 0 20px cyan;
+  text-align: center;
+  display: none;
+}
+
+.hud h1 {
+  color: cyan;
   text-shadow: 0 0 8px cyan;
+  font-size: 20px;
+}
+
+.hud input, .hud textarea {
+  width: 100%;
+  background: rgba(0, 50, 60, 0.3);
+  border: 1px solid cyan;
+  border-radius: 6px;
+  color: cyan;
+  margin-top: 10px;
+  padding: 8px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.hud textarea {
+  height: 80px;
+  resize: none;
+}
+
+.hud-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hud button {
+  background: black;
+  border: 1px solid cyan;
+  color: cyan;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.hud button:hover {
+  background: cyan;
+  color: black;
+}
+
+#glyphOutput {
+  margin-top: 10px;
+  color: lime;
+  font-size: 14px;
+  word-break: break-all;
 }
