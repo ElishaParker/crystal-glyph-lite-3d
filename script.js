@@ -51,7 +51,38 @@ function onClick() {
   if (!isZoomed) {
     isZoomed = true;
     zoomToNode();
+  } else if (!hudVisible) {
+    showHUD(true);
   }
+}
+
+function closeHUD() {
+  showHUD(false);
+  hudVisible = false;
+  hasPlayed = false;
+
+  // Smooth zoom out to reset camera
+  const targetZ = 8;
+  const zoomSpeed = 0.05;
+  function zoom() {
+    if (camera.position.z < targetZ) {
+      camera.position.z += zoomSpeed;
+      requestAnimationFrame(zoom);
+    } else {
+      // Re-enable interaction after zoom completes
+      isZoomed = false;
+    }
+  }
+  zoom();
+}
+
+let hudVisible = false;
+
+function showHUD(show) {
+  hud.style.display = show ? "block" : "none";
+  hudVisible = show;
+}
+
 }
 
 function zoomToNode() {
