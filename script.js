@@ -1,3 +1,4 @@
+alert("Script loaded!");
 let scene, camera, renderer;
 let orbs = [];
 let connections = [];
