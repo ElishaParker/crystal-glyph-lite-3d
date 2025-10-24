@@ -27,7 +27,7 @@ function init() {
 
   const geometry = new THREE.SphereGeometry(1, 64, 64);
   const material = new THREE.MeshStandardMaterial({
-    color: 0x00ffff,
+    color: 0xffffff,
     emissive: 0x0044ff,
     metalness: 0.8,
     roughness: 0.2,
@@ -37,7 +37,7 @@ function init() {
 
   window.addEventListener("resize", onResize);
   window.addEventListener("click", onClick);
-  convertBtn.addEventListener("click", convertText);
+  convertBtn.addEventListener("click", convertToColorStrip);
   reverseBtn.addEventListener("click", reverseTranslate);
   closeBtn.addEventListener("click", closeHUD);
 }
@@ -108,18 +108,62 @@ function playSoftTone(freq) {
   synth.triggerAttackRelease(freq, "4n");
 }
 
-function convertText() {
-  const text = textInput.value;
-  const base4 = [...text].map(c => (c.charCodeAt(0) % 4).toString()).join('');
-  output.textContent = base4;
+// ---- TEXT → BINARY → COLOR STRIP ----
+function convertToColorStrip() {
+  const text = textInput.value.trim();
+  if (!text) return;
+
+  // Text → binary
+  const binary = text.split("")
+    .map(c => c.charCodeAt(0).toString(2).padStart(8, "0"))
+    .join("");
+
+  // Binary → 2-bit color codes
+  const colors = [];
+  for (let i = 0; i < binary.length; i += 2) {
+    const pair = binary.substr(i, 2);
+    switch (pair) {
+      case "00": colors.push("#ff0000"); break; // red
+      case "01": colors.push("#0000ff"); break; // blue
+      case "10": colors.push("#00ff00"); break; // green
+      case "11": colors.push("#ffff00"); break; // yellow
+    }
+  }
+
+  output.textContent = binary;
+
+  // Generate strip texture
+  const texCanvas = document.createElement("canvas");
+  texCanvas.width = colors.length * 10;
+  texCanvas.height = 10;
+  const ctx = texCanvas.getContext("2d");
+  for (let i = 0; i < colors.length; i++) {
+    ctx.fillStyle = colors[i];
+    ctx.fillRect(i * 10, 0, 10, 10);
+  }
+
+  const texture = new THREE.CanvasTexture(texCanvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(1, 1);
+
+  node.material.map = texture;
+  node.material.needsUpdate = true;
+
+  node.userData = { binary, text };
 }
 
+// ---- COLOR STRIP → BINARY → TEXT ----
 function reverseTranslate() {
-  const base4 = output.textContent;
-  const decoded = [...base4].map(n => String.fromCharCode(parseInt(n, 4) + 96)).join('');
+  if (!node.userData || !node.userData.binary) return;
+  const binary = node.userData.binary;
+  const bytes = binary.match(/.{1,8}/g) || [];
+  const decoded = bytes.map(b => String.fromCharCode(parseInt(b, 2))).join("");
   textInput.value = decoded;
+  output.textContent = binary;
 }
 
+// ---- ANIMATION ----
 function animate() {
   requestAnimationFrame(animate);
   node.rotation.y += 0.003;
