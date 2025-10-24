@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crystal Glyph Core</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tone@next"></script>
 </head>
 <body>
   <canvas id="scene"></canvas>
 
-  <div id="hud" class="hud">
-    <h1>🔮 Crystal Glyph Core</h1>
-    <textarea id="textInput" placeholder="Enter text here..."></textarea>
-    <div class="buttons">
+  <div id="hud">
+    <h2>🔮 Crystal Glyph Core</h2>
+    <textarea id="textInput" placeholder="Enter text to encode..."></textarea>
+    <div class="btns">
       <button id="convertBtn">Convert to Base-4</button>
       <button id="reverseBtn">Reverse Translate</button>
-      <button id="closeBtn">Close</button>
     </div>
-    <p id="output"></p>
+    <button id="closeBtn">Close</button>
+    <div id="output"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
