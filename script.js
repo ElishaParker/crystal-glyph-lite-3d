@@ -80,15 +80,17 @@ function playSoftTone(freq) {
   const synth = new Tone.Synth({
     oscillator: { type: "sine" },
     envelope: {
-      attack: 1.2,
-      decay: 2.0,
-      sustain: 0.6,
-      release: 2.5
+      attack: 4.5,   // slower fade-in (was 1.2)
+      decay: 3.5,
+      sustain: 0.5,
+      release: 6.0   // longer release (was 2.5)
     }
   }).toDestination();
+
   Tone.start();
-  synth.triggerAttackRelease(freq, "8n");
+  synth.triggerAttackRelease(freq, "16n"); // longer note length
 }
+
 
 function convertText() {
   const text = textInput.value;
