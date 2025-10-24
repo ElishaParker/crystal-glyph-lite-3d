@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Share Tech Mono', monospace;
+  background: radial-gradient(ellipse at bottom, #020202 0%, #000000 100%);
+  color: cyan;
+}
+
+#hud {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  background: rgba(0, 10, 20, 0.7);
+  border: 1px solid #00ffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,255,255,0.4);
+  backdrop-filter: blur(4px);
+  transition: opacity 1s ease;
+}
+
+#hud.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#hud h1 {
+  margin: 0;
+  font-size: 20px;
+  color: #00ffff;
+}
+
+#hud textarea {
+  width: 260px;
+  height: 90px;
+  background: rgba(255,255,255,0.05);
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  margin-top: 10px;
+  resize: none;
+  font-family: inherit;
+}
+
+#hud button {
+  margin-top: 10px;
+  background: #00ffff;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+#hud button:hover {
+  background: #0ff;
+  box-shadow: 0 0 10px #0ff;
+}
