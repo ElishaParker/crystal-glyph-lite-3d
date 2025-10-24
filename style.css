@@ -2,65 +2,51 @@ body {
   margin: 0;
   overflow: hidden;
   background-color: black;
-  color: cyan;
   font-family: 'Orbitron', sans-serif;
+  color: cyan;
 }
 
 canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
 }
 
-.hud {
-  position: absolute;
+#hud {
+  display: none;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 15, 25, 0.9);
+  background: rgba(0, 20, 30, 0.9);
+  padding: 20px;
   border: 1px solid cyan;
   border-radius: 10px;
-  padding: 20px;
-  width: 300px;
-  text-align: center;
   box-shadow: 0 0 20px cyan;
-  display: none;
-}
-
-.hud h1 {
-  font-size: 18px;
-  text-shadow: 0 0 10px cyan;
+  text-align: center;
+  width: 300px;
 }
 
 textarea {
-  width: 100%;
+  width: 90%;
   height: 80px;
-  background: rgba(0, 50, 60, 0.3);
-  border: 1px solid cyan;
+  margin-top: 10px;
+  background: black;
   color: cyan;
+  border: 1px solid cyan;
   border-radius: 5px;
-  margin-top: 10px;
-  padding: 5px;
-  resize: none;
-}
-
-.buttons {
-  margin-top: 10px;
 }
 
 button {
-  margin: 5px;
-  padding: 5px 10px;
   background: black;
-  border: 1px solid cyan;
   color: cyan;
+  border: 1px solid cyan;
   border-radius: 5px;
+  margin: 8px;
+  padding: 6px 12px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
-
 button:hover {
   background: cyan;
   color: black;
@@ -68,7 +54,6 @@ button:hover {
 
 #output {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 0.9em;
   color: lime;
-  word-wrap: break-word;
 }
