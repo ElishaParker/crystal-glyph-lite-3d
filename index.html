@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crystal Glyph Lite 3D</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crystal Glyph Core</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <canvas id="scene"></canvas>
 
-  <div class="hud" id="hud">
-    <h1>🔮 Crystal Glyph Lite 3D</h1>
-    <input id="nodeTitle" type="text" placeholder="Node Title">
-    <textarea id="nodeText" placeholder="Enter text to encode..."></textarea>
-    <div class="hud-buttons">
+  <div id="hud" class="hud">
+    <h1>🔮 Crystal Glyph Core</h1>
+    <textarea id="textInput" placeholder="Enter text here..."></textarea>
+    <div class="buttons">
       <button id="convertBtn">Convert to Base-4</button>
-      <button id="closeBtn">⨯ Close</button>
+      <button id="reverseBtn">Reverse Translate</button>
+      <button id="closeBtn">Close</button>
     </div>
-    <p id="glyphOutput"></p>
+    <p id="output"></p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
