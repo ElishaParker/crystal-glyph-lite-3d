@@ -48,22 +48,17 @@ function onResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// ----- CLICK FLOW -----
 function onClick() {
-  if (!isZoomed) {
-    zoomToNode();
-  } else if (isZoomed && !hudVisible) {
-    openHUD();
-  }
+  if (!isZoomed) zoomToNode();
+  else if (isZoomed && !hudVisible) openHUD();
 }
 
 function zoomToNode() {
   const targetZ = 2.5;
-  const zoomSpeed = 0.05;
-
+  const speed = 0.05;
   function zoom() {
     if (camera.position.z > targetZ) {
-      camera.position.z -= zoomSpeed;
+      camera.position.z -= speed;
       requestAnimationFrame(zoom);
     } else {
       isZoomed = true;
@@ -77,7 +72,7 @@ function openHUD() {
   hud.style.display = "block";
   hudVisible = true;
   if (!hasPlayed) {
-    playSoftTone(396); // nice calm base tone
+    playSoftTone(432);
     hasPlayed = true;
   }
 }
@@ -91,67 +86,43 @@ function closeHUD() {
 
 function zoomOut() {
   const targetZ = 8;
-  const zoomSpeed = 0.05;
+  const speed = 0.05;
   function zoom() {
     if (camera.position.z < targetZ) {
-      camera.position.z += zoomSpeed;
+      camera.position.z += speed;
       requestAnimationFrame(zoom);
     } else {
-      isZoomed = false; // ready for next click
+      isZoomed = false;
     }
   }
   zoom();
 }
 
-// ----- SOUND -----
 function playSoftTone(freq) {
   const synth = new Tone.Synth({
     oscillator: { type: "sine" },
-    envelope: {
-      attack: 2.5,   // gentle fade-in
-      decay: 2.0,
-      sustain: 0.1,
-      release: 3.0   // lingering fade-out
-    }
+    envelope: { attack: 3, decay: 2, sustain: 0.1, release: 4 }
   }).toDestination();
 
   Tone.start();
-  synth.triggerAttackRelease(freq, "8n");
+  synth.triggerAttackRelease(freq, "4n");
 }
 
-// ----- BASE-4 ENCODER -----
 function convertText() {
   const text = textInput.value;
-  const base4 = textToBase4(text);
+  const base4 = [...text].map(c => (c.charCodeAt(0) % 4).toString()).join('');
   output.textContent = base4;
 }
 
 function reverseTranslate() {
-  const base4 = output.textContent.trim();
-  textInput.value = base4ToText(base4);
+  const base4 = output.textContent;
+  const decoded = [...base4].map(n => String.fromCharCode(parseInt(n, 4) + 96)).join('');
+  textInput.value = decoded;
 }
 
-function textToBase4(str) {
-  let result = "";
-  for (let i = 0; i < str.length; i++) {
-    result += (str.charCodeAt(i) % 4).toString();
-  }
-  return result;
-}
-
-function base4ToText(base4) {
-  if (!base4) return "";
-  let chars = [];
-  for (let i = 0; i < base4.length; i++) {
-    chars.push(String.fromCharCode(parseInt(base4[i], 4) + 96));
-  }
-  return chars.join("");
-}
-
-// ----- ANIMATION -----
 function animate() {
   requestAnimationFrame(animate);
-  node.rotation.y += 0.004;
+  node.rotation.y += 0.003;
   node.material.emissiveIntensity = 0.5 + Math.sin(Date.now() * 0.002) * 0.3;
   renderer.render(scene, camera);
 }
