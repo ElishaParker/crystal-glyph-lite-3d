@@ -1,6 +1,8 @@
-let scene, camera, renderer, node, controls;
+let scene, camera, renderer, node;
 let isZoomed = false;
 let nodeData = { text: "", base4: "" };
+let hudShownOnce = false;
+
 const hud = document.getElementById("hud");
 const textInput = document.getElementById("textInput");
 const convertBtn = document.getElementById("convertBtn");
@@ -61,8 +63,12 @@ function zoomToNode() {
       camera.position.z -= zoomSpeed;
       requestAnimationFrame(zoom);
     } else {
+      if (!hudShownOnce) {
+        textInput.placeholder = "Enter text to encode...";
+        hudShownOnce = true;
+      }
       showHUD(true);
-      playTone(432);
+      playSmoothTone(432);
     }
   };
   zoom();
@@ -72,13 +78,19 @@ function showHUD(show) {
   hud.style.display = show ? "block" : "none";
 }
 
-function playTone(freq) {
-  const synth = new Tone.Synth({
+function playSmoothTone(freq) {
+  const synth = new Tone.PolySynth(Tone.Synth, {
     oscillator: { type: "sine" },
-    envelope: { attack: 0.05, decay: 0.3, sustain: 0.2, release: 0.8 }
+    envelope: {
+      attack: 1.2,   // gentle fade-in
+      decay: 2.0,
+      sustain: 0.4,
+      release: 2.5   // slow fade-out
+    }
   }).toDestination();
+
   Tone.start();
-  synth.triggerAttackRelease(freq, "8n");
+  synth.triggerAttackRelease(freq, "4n");
 }
 
 function convertText() {
